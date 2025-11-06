@@ -20,22 +20,57 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Aqui você fará a chamada para o MongoDB (Semana 2)
-            // Por enquanto, vamos simular um login bem-sucedido
+            // IMPORTANTE: Estas variáveis vêm da Vercel (Environment Variables)
+            // Em desenvolvimento local, funciona sem banco (modo demo)
             
-            console.log('Dados do usuário:', userData);
-            
-            // Simula delay de rede
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Tenta usar variáveis de ambiente da Vercel
+            const apiUrl = typeof process !== 'undefined' && process.env?.API_URL;
+            const apiKey = typeof process !== 'undefined' && process.env?.API_KEY;
 
-            // Mostra mensagem de sucesso
-            showMessage('✅ Login realizado com sucesso!', 'success');
+            // Se tiver credenciais do MongoDB, salva no banco
+            if (apiUrl && apiKey) {
+                console.log('📡 Salvando no MongoDB Atlas...');
+                
+                const response = await fetch(`${apiUrl}/action/insertOne`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': apiKey
+                    },
+                    body: JSON.stringify({
+                        dataSource: 'Cluster0',
+                        database: 'logindb',
+                        collection: 'usuarios',
+                        document: userData
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    console.log('✅ Salvo no MongoDB:', result);
+                    showMessage('✅ Login realizado e salvo no banco de dados!', 'success');
+                } else {
+                    throw new Error('Falha ao salvar no banco');
+                }
+            } else {
+                // Modo DEMO (sem MongoDB configurado)
+                console.log('📋 Modo DEMO - Dados não salvos (MongoDB não configurado)');
+                console.log('Dados do usuário:', userData);
+                
+                // Simula delay de rede
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                showMessage('✅ Login realizado! (Modo DEMO - configure MongoDB na Vercel)', 'success');
+            }
             
             // Limpa o formulário
             form.reset();
 
-            // Em produção, você redirecionaria para outra página:
-            // window.location.href = '/dashboard.html';
+            // Em produção real, você redirecionaria:
+            // setTimeout(() => {
+            //     window.location.href = '/dashboard.html';
+            // }, 2000);
 
         } catch (error) {
             showMessage('❌ Erro ao fazer login. Tente novamente.', 'error');
@@ -54,38 +89,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
     }
 });
-
-/* ========================================
-   PARA CONECTAR COM MONGODB (SEMANA 2)
-   ========================================
-   
-   Substitua o bloco try/catch acima por:
-
-   try {
-       const response = await fetch('API_URL_DO_MONGODB/action/insertOne', {
-           method: 'POST',
-           headers: {
-               'Content-Type': 'application/json',
-               'api-key': 'SUA_API_KEY'
-           },
-           body: JSON.stringify({
-               dataSource: 'Cluster0',
-               database: 'logindb',
-               collection: 'usuarios',
-               document: userData
-           })
-       });
-
-       if (response.ok) {
-           showMessage('✅ Login realizado com sucesso!', 'success');
-           form.reset();
-       } else {
-           throw new Error('Falha na requisição');
-       }
-   } catch (error) {
-       showMessage('❌ Erro ao fazer login. Tente novamente.', 'error');
-       console.error('Erro:', error);
-   }
-
-   ========================================
-*/
