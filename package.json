@@ -1,0 +1,16 @@
+{
+  "name": "0-deploy",
+  "version": "1.0.0",
+  "description": "Sistema de login com MongoDB Atlas e Vercel",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build"
+  },
+  "dependencies": {
+    "mongodb": "^6.3.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

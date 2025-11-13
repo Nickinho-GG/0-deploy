@@ -7,65 +7,62 @@
 
 ---
 
-## 🗄️ PARTE 2: CONFIGURAR MONGODB ATLAS (15 minutos)
+## 🗄️ PARTE 2: CONFIGURAR MONGODB ATLAS (Nova Interface 2025)
 
-### Passo 1: Criar Conta
+⭐ **IMPORTANTE:** O MongoDB atualizou a interface! Veja o guia completo atualizado em: **`MONGODB-SETUP-2025.md`**
+
+### 📋 RESUMO DO QUE VOCÊ PRECISA FAZER:
+
+#### ✅ Passo 1: Criar Conta (se ainda não tiver)
 1. Acesse: **https://www.mongodb.com/cloud/atlas/register**
-2. Crie conta (pode usar Google para ser mais rápido)
-3. Escolha o plano **FREE** (M0 - grátis para sempre)
+2. Crie conta (pode usar Google)
+3. Escolha o plano **FREE** (M0)
 
-### Passo 2: Criar Database
-1. Após login, clique em **"Create"** (ou "Build a Database")
+#### ✅ Passo 2: Criar Cluster
+1. Menu **"DATABASE"** → **"Clusters"** → **"Create"**
 2. Escolha **"M0 FREE"**
-3. Escolha:
-   - **Provider**: AWS
-   - **Region**: São Paulo (sa-east-1) ou a mais próxima
-4. **Cluster Name**: deixe `Cluster0` mesmo
-5. Clique em **"Create Cluster"** (demora 3-5 minutos)
+3. Provider: **AWS** | Region: **São Paulo**
+4. Cluster Name: `Cluster0`
+5. Aguarde 3-5 minutos
 
-### Passo 3: Criar Usuário do Banco
-1. Vai aparecer uma tela pedindo para criar usuário
-2. **Username**: `admin` (ou o que quiser)
-3. **Password**: Clique em **"Autogenerate Secure Password"**
-4. **⚠️ IMPORTANTE**: Copie e salve a senha em algum lugar seguro!
-5. Clique em **"Create User"**
+#### ✅ Passo 3: Criar Database e Collection
+1. **"Browse Collections"** → **"Add My Own Data"**
+2. Database: `logindb`
+3. Collection: `usuarios`
 
-### Passo 4: Liberar Acesso (IP)
-1. Ainda na mesma tela, role para baixo
-2. Clique em **"Add My Current IP Address"**
-3. **Depois** clique em **"Add a Different IP Address"**
-4. Digite: `0.0.0.0/0` (permite acesso de qualquer lugar - necessário para Vercel)
-5. Descrição: `Vercel`
-6. Clique em **"Finish and Close"**
+#### ✅ Passo 4: Liberar Acesso (Network)
+1. Menu **"SECURITY"** → **"Database & Network Access"**
+2. **"Add IP Address"** → **"Allow Access From Anywhere"**
+3. Isso adiciona `0.0.0.0/0` automaticamente
 
-### Passo 5: Acessar o Cluster
-1. Clique em **"Go to Database"** (ou "Browse Collections")
-2. Clique em **"Add My Own Data"**
-3. **Database name**: `logindb`
-4. **Collection name**: `usuarios`
-5. Clique em **"Create"**
+#### ✅ Passo 5: Criar Usuário
+1. Menu **"SECURITY"** → **"Project Identity & Access"**
+2. **"Add New Database User"**
+3. Username: `admin`
+4. Password: **"Autogenerate Secure Password"**
+5. **⚠️ COPIE A SENHA!**
 
-### Passo 6: Pegar as Credenciais (IMPORTANTE!)
-1. Volte para a tela principal (clique em "Database" no menu lateral)
-2. Clique no botão **"Connect"** no seu cluster
-3. Escolha **"Drivers"**
-4. Copie a **connection string** (algo como):
-   ```
-   mongodb+srv://admin:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
-   ```
-5. **Substitua `<password>` pela senha que você copiou no Passo 3**
-6. **Salve essa string completa!** Vamos usar na Vercel
+#### ✅ Passo 6: Habilitar Data API ⭐ (CRUCIAL!)
+1. Menu **"SERVICES"** → **"App Services"**
+2. **"Create a New App"** ou use existente
+3. No App Service, vá em **"Data API"**
+4. **"Enable Data API"** (se não estiver habilitado)
+5. **"Create API Key"**
+6. **⚠️ COPIE:**
+   - **API Key** (exemplo: `abc123xyz...`)
+   - **Data API URL** (exemplo: `https://data.mongodb-api.com/app/data-xxxxx/endpoint/data/v1`)
 
-### Passo 7: Habilitar Data API (Acesso via HTTP)
-1. No menu lateral, clique em **"Data API"** (pode estar em "App Services")
-2. Clique em **"Enable Data API"**
-3. Clique em **"Create API Key"**
-4. **⚠️ COPIE E SALVE** a API Key (só mostra uma vez!)
-5. A **URL base** também será mostrada (algo como):
-   ```
-   https://data.mongodb-api.com/app/data-xxxxx/endpoint/data/v1
-   ```
-6. **Salve essa URL também!**
+---
+
+### 🎯 ME ENVIE ESTAS 3 INFORMAÇÕES:
+
+```
+1. Data API URL: https://data.mongodb-api.com/app/data-XXXXX/endpoint/data/v1
+2. API Key: sua_api_key_aqui
+3. Cluster Name: Cluster0
+```
+
+📖 **Passo a passo DETALHADO com prints da nova interface:** Veja `MONGODB-SETUP-2025.md`
 
 ---
 
